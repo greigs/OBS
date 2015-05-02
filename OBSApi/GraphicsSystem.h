@@ -567,6 +567,7 @@ public:
 
     // To prevent breaking the API, put this at the end instead of with the other Texture functions
     virtual Texture*        CreateSharedTexture(unsigned int width, unsigned int height)=0;
+	virtual Texture*        CreateSharedTexture2(unsigned int width, unsigned int height) = 0;
 
 protected:
     //manual coordinate generation

@@ -497,7 +497,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     //------------------------------------------------------------
     //make sure only one instance of the application can be open at a time
 
-    hOBSMutex = CreateMutex(NULL, TRUE, TEXT("OBSMutex"));
+    /*hOBSMutex = CreateMutex(NULL, TRUE, TEXT("OBSMutex"));
     if(!bDisableMutex && GetLastError() == ERROR_ALREADY_EXISTS)
     {
         hwndMain = FindWindow(OBS_WINDOW_CLASS, NULL);
@@ -506,7 +506,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
         CloseHandle(hOBSMutex);
         return 0;
-    }
+    }*/
 
     //------------------------------------------------------------
 

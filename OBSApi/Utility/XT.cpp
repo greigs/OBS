@@ -311,7 +311,7 @@ void __cdecl AppWarning(const TCHAR *format, ...)
 #if defined(_DEBUG) && defined(_WIN32)
     if(bDebugBreak && OSDebuggerPresent())
     {
-        ProgramBreak();
+        //ProgramBreak();
     }
 #endif
 

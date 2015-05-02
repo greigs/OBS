@@ -424,6 +424,10 @@ Texture* D3D10System::CreateSharedTexture(unsigned int width, unsigned int heigh
 {
     return D3D10Texture::CreateShared(width, height);
 }
+Texture* D3D10System::CreateSharedTexture2(unsigned int width, unsigned int height)
+{
+	return D3D10Texture::CreateShared2(width, height);
+}
 
 Texture* D3D10System::CreateTexture(unsigned int width, unsigned int height, GSColorFormat colorFormat, void *lpData, BOOL bBuildMipMaps, BOOL bStatic)
 {
@@ -1068,4 +1072,5 @@ void D3D10System::CopyTexture(Texture *texDest, Texture *texSrc)
     D3D10Texture *d3d10Src  = static_cast<D3D10Texture*>(texSrc);
 
     d3d->CopyResource(d3d10Dest->texture, d3d10Src->texture);
+	d3d->Flush();
 }

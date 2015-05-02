@@ -918,7 +918,7 @@ void OBS::MainCaptureLoop()
         {
             if(!lastRenderTexture)
             {
-                lastRenderTexture = CreateTexture(baseCX, baseCY, GS_BGRA, NULL, FALSE, TRUE);
+				lastRenderTexture = CreateTexture(baseCX, baseCY, GS_BGRA, NULL, FALSE, TRUE);
                 if(lastRenderTexture)
                 {
                     D3D10Texture *d3dTransitionTex = static_cast<D3D10Texture*>(lastRenderTexture);
@@ -1112,7 +1112,7 @@ void OBS::MainCaptureLoop()
                     curYUVTexture = 0;
                 else
                     curYUVTexture++;
-            }
+            }	
         }
 
         lastStreamTime = curStreamTime;
@@ -1121,7 +1121,10 @@ void OBS::MainCaptureLoop()
         {
             UINT prevCopyTexture = (curCopyTexture == 0) ? NUM_RENDER_BUFFERS-1 : curCopyTexture-1;
 
-            ID3D10Texture2D *copyTexture = copyTextures[curCopyTexture];
+			ID3D10Texture2D *copyTexture = copyTextures[curCopyTexture];
+			
+
+
             profileIn("CopyResource");
 
             if(!bFirstEncode && bUseThreaded420)
@@ -1133,6 +1136,13 @@ void OBS::MainCaptureLoop()
             D3D10Texture *d3dYUV = static_cast<D3D10Texture*>(yuvRenderTextures[curYUVTexture]);
             GetD3D()->CopyResource(copyTexture, d3dYUV->texture);
             profileOut;
+
+			IDXGIResource *sharedResource10;
+			copyTexture->QueryInterface(__uuidof(IDXGIResource), (void**)(&sharedResource10));
+			HANDLE sharedHandle;
+			sharedResource10->GetSharedHandle(&sharedHandle);
+			long handlelng = HandleToLong(sharedHandle);
+			//sharedResource10->Release();
 
             ID3D10Texture2D *prevTexture = copyTextures[prevCopyTexture];
 

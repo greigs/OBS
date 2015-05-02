@@ -113,6 +113,7 @@ class D3D10Texture : public Texture
     static Texture* CreateRenderTarget(unsigned int width, unsigned int height, GSColorFormat colorFormat, BOOL bGenMipMaps);
     static Texture* CreateGDITexture(unsigned int width, unsigned int height);
     static Texture* CreateShared(unsigned int width, unsigned int height);
+	static Texture* CreateShared2(unsigned int width, unsigned int height);
 
 public:
     ~D3D10Texture();
@@ -474,6 +475,7 @@ public:
 
     // To prevent breaking the API, put this at the end instead of with the other Texture functions
     virtual Texture*        CreateSharedTexture(unsigned int width, unsigned int height);
+	virtual Texture*        CreateSharedTexture2(unsigned int width, unsigned int height);
 };
 
 inline ID3D10Device*        GetD3D()        {return static_cast<ID3D10Device*>(GS->GetDevice());}

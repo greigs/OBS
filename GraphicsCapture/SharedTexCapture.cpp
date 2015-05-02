@@ -18,7 +18,21 @@
 
 
 #include "GraphicsCapture.h"
+#include <dxgi.h>
+#include <d3d10.h>
+#include <sstream>
+#include <iostream>
+#include <chrono>
+#include <thread>
 
+
+template <class T>
+inline std::string to_string(const T& t)
+{
+	std::stringstream ss;
+	ss << t;
+	return ss.str();
+}
 
 void SharedTexCapture::Destroy()
 {
@@ -72,20 +86,64 @@ bool SharedTexCapture::Init(CaptureInfo &info)
         return false;
     }
 
-    copyTexture = GS->CreateTexture(info.cx, info.cy, (GSColorFormat)info.format, 0, FALSE, TRUE);
+	sharedTextureExt = GS->CreateSharedTexture2(info.cx, info.cy);
+	copyTexture = GS->CreateTexture(info.cx, info.cy, (GSColorFormat)info.format, 0, FALSE, TRUE);
 
     Log(TEXT("SharedTexCapture hooked"));
 
     bInitialized = true;
     return true;
 }
+Texture* tx2;
 
 Texture* SharedTexCapture::LockTexture()
 {
-    GS->CopyTexture(copyTexture, sharedTexture);
+
+
+	IDXGIKeyedMutex *g_pDXGIKeyedMutex;
+
+	IDXGIResource *sharedResource10;
+	ID3D10Texture2D *tx = (ID3D10Texture2D*)sharedTextureExt->GetD3DTexture();
+
+	tx->QueryInterface(__uuidof(IDXGIResource), (void**)(&sharedResource10));
+
+
+	GS->CopyTexture(sharedTextureExt, sharedTexture);
+	GS->CopyTexture(copyTexture, sharedTextureExt);
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(20));
+
+
+	HANDLE sharedHandle;
+	sharedResource10->GetSharedHandle(&sharedHandle);
+	long handlelng = HandleToLong(sharedHandle);
+	std::wstring str1 = std::to_wstring(handlelng);
+	const wchar_t * str2 =  str1.c_str();
+
+	AppWarning(str2);
+
+//	DWORD width = sharedTexture->Width();
+//	DWORD height = sharedTexture->Height();
+
+//	tx2 = GS->CreateTextureFromSharedHandle(width, height, sharedHandle);
+	
+//	ID3D10Texture2D *tx3 = (ID3D10Texture2D *)tx2->GetD3DTexture();
+
+	//GS->CopyTexture(copyTexture, tx2);
+
     return copyTexture;
 }
 
 void SharedTexCapture::UnlockTexture()
 {
+
+	//IDXGIKeyedMutex *g_pDXGIKeyedMutex;
+	//ID3D10Texture2D *tx = (ID3D10Texture2D*)sharedTextureExt->GetD3DTexture();
+	//tx->QueryInterface(__uuidof(IDXGIKeyedMutex), (LPVOID*)&g_pDXGIKeyedMutex);
+	//HRESULT result = g_pDXGIKeyedMutex->ReleaseSync(0);
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+
+
 }

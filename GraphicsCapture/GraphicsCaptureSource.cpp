@@ -938,6 +938,7 @@ void GraphicsCaptureSource::Render(const Vect2 &pos, const Vect2 &size)
         //----------------------------------------------------------
         // game texture
 
+
         Texture *tex = capture->LockTexture();
 
         Vect2 texPos = Vect2(0.0f, 0.0f);
