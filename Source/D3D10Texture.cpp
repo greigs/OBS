@@ -525,10 +525,10 @@ Texture* D3D10Texture::CreateShared2(unsigned int width, unsigned int height)
 	td.MipLevels = 1;
 	td.ArraySize = 1;
 	td.SampleDesc.Count = 1;
-	//td.SampleDesc.Quality = 0;
-	//td.BindFlags = D3D10_BIND_SHADER_RESOURCE;
-	td.Usage = D3D10_USAGE_STAGING;
-	td.CPUAccessFlags = D3D10_CPU_ACCESS_READ;
+	td.SampleDesc.Quality = 0;
+	td.BindFlags = D3D10_BIND_RENDER_TARGET | D3D10_BIND_SHADER_RESOURCE;
+	td.Usage = D3D10_USAGE_DEFAULT;
+	//td.CPUAccessFlags = D3D10_CPU_ACCESS_READ;
 	td.MiscFlags = D3D10_RESOURCE_MISC_SHARED;
 
 	ID3D10Texture2D *texVal;

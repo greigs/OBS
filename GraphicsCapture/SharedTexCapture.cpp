@@ -107,20 +107,33 @@ Texture* SharedTexCapture::LockTexture()
 
 	tx->QueryInterface(__uuidof(IDXGIResource), (void**)(&sharedResource10));
 
-
-	GS->CopyTexture(sharedTextureExt, sharedTexture);
-	GS->CopyTexture(copyTexture, sharedTextureExt);
-
-	std::this_thread::sleep_for(std::chrono::milliseconds(20));
-
-
 	HANDLE sharedHandle;
 	sharedResource10->GetSharedHandle(&sharedHandle);
 	long handlelng = HandleToLong(sharedHandle);
 	std::wstring str1 = std::to_wstring(handlelng);
-	const wchar_t * str2 =  str1.c_str();
+	const wchar_t * str2 = str1.c_str();
 
 	AppWarning(str2);
+
+
+	GS->CopyTexture(sharedTextureExt, sharedTexture);
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(50));
+
+	bool result;
+
+	//D3D10_MAPPED_TEXTURE2D map;
+	//if (SUCCEEDED(result = tx->Map(0, D3D10_MAP_READ, 0, &map))){
+
+	//}
+
+	GS->CopyTexture(copyTexture, sharedTextureExt);
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+
+
+
+
 
 //	DWORD width = sharedTexture->Width();
 //	DWORD height = sharedTexture->Height();

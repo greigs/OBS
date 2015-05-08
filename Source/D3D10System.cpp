@@ -1071,6 +1071,22 @@ void D3D10System::CopyTexture(Texture *texDest, Texture *texSrc)
     D3D10Texture *d3d10Dest = static_cast<D3D10Texture*>(texDest);
     D3D10Texture *d3d10Src  = static_cast<D3D10Texture*>(texSrc);
 
-    d3d->CopyResource(d3d10Dest->texture, d3d10Src->texture);
+
+	D3D10_BOX srcbox;
+	ZeroMemory(&srcbox, sizeof(D3D10_BOX));
+	srcbox.left = 0;
+	srcbox.top = 0;
+	srcbox.front = 0;
+	srcbox.right = d3d10Src->width;
+	srcbox.bottom = d3d10Src->height;
+	srcbox.back = 1;
+	
+
+	d3d->CopySubresourceRegion(d3d10Dest->texture, 0, 0, 0, 0, d3d10Src->texture, 0, &srcbox);
+
+    //d3d->CopyResource(d3d10Dest->texture, d3d10Src->texture);
+	
 	d3d->Flush();
+	d3d->Release();
+
 }
