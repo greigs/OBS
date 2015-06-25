@@ -19,9 +19,13 @@
 
 #include "Main.h"
 #include <dwmapi.h>
+#include "gdiplus.h"
 
 
 #define NUM_CAPTURE_TEXTURES 2
+
+using namespace Gdiplus;
+
 
 class DesktopImageSource : public ImageSource
 {
@@ -74,6 +78,19 @@ class DesktopImageSource : public ImageSource
     bool     bInInit;
 
     OutputDuplicator *duplicator;
+
+	//------------------------
+	// For copying to texture GrS
+	HDC hdcDesktop;
+	HDC hdcDestination;
+	HBITMAP hBitmap;
+	Bitmap* bitmap;
+	HPALETTE hPalette;
+	BitmapData bitmapData;
+	ID3D10Texture2D *texVal;
+	ID3D10Texture2D *texValshared;
+	bool initialised = false;
+
 
 public:
     DesktopImageSource(UINT frameTime, XElement *data)
@@ -370,7 +387,7 @@ public:
             if(hwndCapture && captureType == 1 && !bClientCapture)
                 hCaptureDC = GetWindowDC(hwndCapture);
             else
-                hCaptureDC = GetDC(hwndCapture);
+                hCaptureDC = GetDC(NULL);
 
             if(bWindowNotFound)
             {
@@ -385,11 +402,184 @@ public:
                 //CAPTUREBLT causes mouse flicker, so make capturing layered optional
                 if(!BitBlt(hDC, 0, 0, width, height, hCaptureDC, captureRect.left, captureRect.top, bCaptureLayered ? SRCCOPY|CAPTUREBLT : SRCCOPY))
                 {
+
+
+
+
                     RUNONCE AppWarning(TEXT("Capture BitBlt failed (%d)..  just so you know"), GetLastError());
                 }
-            }
 
-            ReleaseDC(hwndCapture, hCaptureDC);
+
+
+
+
+				//hdcDesktop = GetDC(NULL);
+				//if (!hdcDesktop)
+				//	return;
+
+				//hdcDestination = CreateCompatibleDC(hDC);
+				//if (!hdcDestination)
+				//	return;
+
+				hBitmap = CreateCompatibleBitmap(hDC, width, height);
+				if (!hBitmap)
+					return;
+
+				hPalette = (HPALETTE)GetCurrentObject(hDC, OBJ_PAL);
+
+
+				bitmap = Bitmap::FromHBITMAP(hBitmap, hPalette);
+				zero(&bitmapData, sizeof(bitmapData));
+				Status lockStatus;
+				lockStatus = bitmap->LockBits(&Rect(0, 0, width, height), ImageLockModeRead,
+					PixelFormat32bppRGB, &bitmapData);
+				unsigned char *pSourcePixels = (unsigned char*)bitmapData.Scan0;
+
+				HRESULT err;
+
+				if (!initialised){
+
+
+					D3D10_TEXTURE2D_DESC td;
+					zero(&td, sizeof(td));
+					td.Width = width;
+					td.Height = height;
+					td.Format = DXGI_FORMAT_B8G8R8X8_UNORM;
+					td.MipLevels = 1;
+					td.ArraySize = 1;
+					td.SampleDesc.Count = 1;
+					td.SampleDesc.Quality = 0;
+					td.BindFlags = D3D10_BIND_SHADER_RESOURCE; //D3D10_BIND_RENDER_TARGET | 
+					td.Usage = D3D10_USAGE_DYNAMIC;
+					td.CPUAccessFlags = D3D10_CPU_ACCESS_WRITE;
+					//td.CPUAccessFlags = D3D10_CPU_ACCESS_WRITE;
+					//td.MiscFlags = D3D10_RESOURCE_MISC_SHARED;
+
+
+					if (FAILED(err = GetD3D()->CreateTexture2D(&td, NULL, &texVal)))
+					{
+
+					}
+				}
+
+				/*
+				D3D10_MAPPED_TEXTURE2D mapped;
+				texVal->Map(0, D3D10_MAP_READ, 0, &mapped);
+
+
+				
+				// get destination pointer and copy pixels
+				unsigned char *pDestPixels = (unsigned char*)mapped.pData;
+				for (int y = 0; y < height; y++)
+				{
+					// copy a row
+					memcpy(pDestPixels, pSourcePixels, width * 4);   // 4 bytes per pixel
+
+					// advance row pointers
+					pSourcePixels += bitmapData.Stride;
+					pDestPixels += mapped.RowPitch;
+				}*/
+
+
+
+				D3D10_MAPPED_TEXTURE2D mappedTex;
+				texVal->Map(D3D10CalcSubresource(0, 0, 1), D3D10_MAP_WRITE_DISCARD, 0, &mappedTex);
+
+				UCHAR* pTexels = (UCHAR*)mappedTex.pData;
+				for (int y = 0; y < height; y++)
+				{
+					// copy a row
+					memcpy(pTexels, pSourcePixels, width * 4);   // 4 bytes per pixel
+
+					// advance row pointers
+					pSourcePixels += bitmapData.Stride;
+					pTexels += mappedTex.RowPitch;
+				}
+
+				//UCHAR* pTexels = (UCHAR*)mappedTex.pData;
+				//for (UINT row = 0; row < height; row++)
+				//{
+				//	UINT rowStart = row * mappedTex.RowPitch;
+				//	for (UINT col = 0; col < width; col++)
+				//	{
+				//		UINT colStart = col * 4;
+				//		pTexels[rowStart + colStart + 0] = 0; // Red
+				//		pTexels[rowStart + colStart + 1] = 0; // Green
+				//		pTexels[rowStart + colStart + 2] = 255;  // Blue
+				//		pTexels[rowStart + colStart + 3] = 0;  // Alpha
+				//	}
+				//}
+
+				texVal->Unmap(D3D10CalcSubresource(0, 0, 1));
+
+
+
+				
+				bitmap->UnlockBits(&bitmapData);
+				delete(bitmap);
+				DeleteObject(hBitmap);
+
+
+
+
+
+
+				if (!initialised){
+					D3D10_TEXTURE2D_DESC tdshared;
+					zero(&tdshared, sizeof(tdshared));
+					tdshared.Width = width;
+					tdshared.Height = height;
+					tdshared.Format = DXGI_FORMAT_B8G8R8X8_UNORM;
+					tdshared.MipLevels = 1;
+					tdshared.ArraySize = 1;
+					tdshared.SampleDesc.Count = 1;
+					tdshared.SampleDesc.Quality = 0;
+					tdshared.BindFlags = D3D10_BIND_RENDER_TARGET | D3D10_BIND_SHADER_RESOURCE;
+					tdshared.Usage = D3D10_USAGE_DEFAULT;
+					tdshared.MiscFlags = D3D10_RESOURCE_MISC_SHARED;
+
+
+					if (FAILED(err = GetD3D()->CreateTexture2D(&tdshared, NULL, &texValshared)))
+					{
+
+					}
+				}
+
+				//texVal->Unmap(0);
+				GetD3D()->Flush();
+
+				initialised = true;
+
+
+
+				GetD3D()->CopyResource(texValshared, texVal);
+				GetD3D()->Flush();
+
+
+
+
+				IDXGIResource *sharedResource10;
+				texValshared->QueryInterface(__uuidof(IDXGIResource), (void**)(&sharedResource10));
+
+				HANDLE sharedHandle;
+				sharedResource10->GetSharedHandle(&sharedHandle);
+				long handlelng = HandleToLong(sharedHandle);
+				std::wstring str1 = std::to_wstring(handlelng);
+				const wchar_t * str2 = str1.c_str();
+
+				AppWarning(str2);
+
+				//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+
+
+            }
+			
+			
+			
+			
+			
+			ReleaseDC(hwndCapture, hCaptureDC);
 
             //----------------------------------------------------------
             // capture mouse
