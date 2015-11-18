@@ -430,6 +430,11 @@ Texture* D3D10System::CreateTexture(unsigned int width, unsigned int height, GSC
     return D3D10Texture::CreateTexture(width, height, colorFormat, lpData, bBuildMipMaps, bStatic);
 }
 
+Texture* D3D10System::CreateSharedTexture2(unsigned int width, unsigned int height)
+{
+	return D3D10Texture::CreateShared2(width, height);
+}
+
 Texture* D3D10System::CreateTextureFromFile(CTSTR lpFile, BOOL bBuildMipMaps)
 {
     return D3D10Texture::CreateFromFile(lpFile, bBuildMipMaps);
