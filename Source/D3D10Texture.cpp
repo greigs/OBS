@@ -510,48 +510,6 @@ Texture* D3D10Texture::CreateShared(unsigned int width, unsigned int height)
 }
 
 
-
-Texture* D3D10Texture::CreateShared2(unsigned int width, unsigned int height)
-{
-
-	AppWarning(TEXT("CREATESHARED2"));
-	HRESULT err;
-
-
-	D3D10_TEXTURE2D_DESC td;
-	zero(&td, sizeof(td));
-	td.Width = width;
-	td.Height = height;
-	td.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-	td.MipLevels = 1;
-	td.ArraySize = 1;
-	td.SampleDesc.Count = 1;
-	td.SampleDesc.Quality = 0;
-	td.BindFlags = D3D10_BIND_RENDER_TARGET | D3D10_BIND_SHADER_RESOURCE;
-	td.Usage = D3D10_USAGE_DEFAULT;
-	//td.CPUAccessFlags = D3D10_CPU_ACCESS_READ;
-	td.MiscFlags = D3D10_RESOURCE_MISC_SHARED;
-
-	ID3D10Texture2D *texVal;
-	if (FAILED(err = GetD3D()->CreateTexture2D(&td, NULL, &texVal)))
-	{
-		AppWarning(TEXT("D3D10Texture::CreateShared2: CreateTexture2D failed, result = 0x%08lX"), err);
-		return NULL;
-	}
-
-	//------------------------------------------
-
-	
-	//------------------------------------------
-
-	D3D10Texture *newTex = new D3D10Texture;
-	newTex->format = GS_BGRA;
-	newTex->texture = texVal;
-	newTex->width = width;
-	newTex->height = height;
-
-	return newTex;
-}
 D3D10Texture::~D3D10Texture()
 {
     SafeRelease(renderTarget);

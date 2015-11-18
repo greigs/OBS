@@ -424,10 +424,6 @@ Texture* D3D10System::CreateSharedTexture(unsigned int width, unsigned int heigh
 {
     return D3D10Texture::CreateShared(width, height);
 }
-Texture* D3D10System::CreateSharedTexture2(unsigned int width, unsigned int height)
-{
-	return D3D10Texture::CreateShared2(width, height);
-}
 
 Texture* D3D10System::CreateTexture(unsigned int width, unsigned int height, GSColorFormat colorFormat, void *lpData, BOOL bBuildMipMaps, BOOL bStatic)
 {
