@@ -9,9 +9,13 @@
 
 using namespace System;
 
-
-public ref class substring_w
+int main(array<System::String ^> ^args)
 {
+	return 0;
+}
+
+class UnmanagedClass {
+
 public:
 	String^ find_suffix(String^ s, int pos)
 	{
@@ -27,13 +31,41 @@ public:
 		return gcnew String(s0.suffix(pos));
 	}
 
+	
+
+	void main()
+	{
+
+		substring s0 = substring();
+		//	WinMain2();
+		Console::WriteLine(L"Hello World");
+	}
 };
 
-int main(array<System::String ^> ^args)
-{
 
-	substring s0 = substring();
-//	WinMain2();
-    Console::WriteLine(L"Hello World"); 
-    return 0;
-}
+public ref class ManagedClass {
+public:
+	// Allocate the native object on the C++ Heap via a constructor
+	ManagedClass() : m_Impl(new UnmanagedClass) {}
+
+	// Deallocate the native object on a destructor
+	~ManagedClass() {
+		delete m_Impl;
+	}
+
+protected:
+	// Deallocate the native object on the finalizer just in case no destructor is called
+	!ManagedClass() {
+		delete m_Impl;
+	}
+
+public:
+	void main() {
+		m_Impl->main();
+	}
+
+
+private:
+	UnmanagedClass * m_Impl;
+};
+
