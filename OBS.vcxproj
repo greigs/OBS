@@ -31,7 +31,7 @@
     <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
@@ -104,6 +104,10 @@
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(WindowsSDK80Path)Include\um;$(WindowsSDK80Path)Include\shared;$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(WindowsSDK80Path)Include\um;$(WindowsSDK80Path)Include\shared;$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <TargetExt>.dll</TargetExt>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -111,7 +115,7 @@
       <PreprocessorDefinitions>WIN32;$(OBS_VERSION_SUFFIX);$(DynamicDefines);_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>false</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
@@ -287,6 +291,7 @@
     <ClCompile Include="Source\GlobalSource.cpp" />
     <ClCompile Include="Source\HTTPClient.cpp" />
     <ClCompile Include="Source\ImageProcessing.cpp" />
+    <ClCompile Include="Source\Main2.cpp" />
     <ClCompile Include="Source\ReplayBuffer.cpp" />
     <ClCompile Include="Source\libnsgif.c" />
     <ClCompile Include="Source\LogUploader.cpp" />
@@ -311,6 +316,8 @@
     <ClCompile Include="Source\SettingsPublish.cpp" />
     <ClCompile Include="Source\SettingsQSV.cpp" />
     <ClCompile Include="Source\SettingsVideo.cpp" />
+    <ClCompile Include="Source\stdafx.cpp" />
+    <ClCompile Include="Source\substring.cpp" />
     <ClCompile Include="Source\TextOutputSource.cpp" />
     <ClCompile Include="Source\Updater.cpp" />
     <ClCompile Include="Source\WindowStuff.cpp" />
@@ -325,11 +332,13 @@
     <ClInclude Include="Source\libnsgif.h" />
     <ClInclude Include="Source\LogUploader.h" />
     <ClInclude Include="Source\Main.h" />
+    <ClInclude Include="Source\Main2.h" />
     <ClInclude Include="Source\OBS.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Source\RTMPPublisher.h" />
     <ClInclude Include="Source\RTMPStuff.h" />
     <ClInclude Include="Source\Settings.h" />
+    <ClInclude Include="Source\stdafx.h" />
     <ClInclude Include="Source\Updater.h" />
     <ClInclude Include="Source\WindowStuff.h" />
   </ItemGroup>

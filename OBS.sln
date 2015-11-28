@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OBS", "OBS.vcxproj", "{221C92F4-3416-43F1-8E4E-78657AFD0111}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -40,6 +40,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "librtmp", "librtmp\librtmp.vcxproj", "{22BF0EE3-CDCD-4925-A5F6-0A94CB5D4DB1}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libfaac", "libfaac\libfaac.vcxproj", "{9CC48C6E-92EB-4814-AD37-97AB3622AB65}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConsoleApplication1", "ConsoleApplication1\ConsoleApplication1.vcxproj", "{D53FBBD3-5B99-48F9-BA7E-EE3E9BFF81DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -152,6 +154,14 @@ Global
 		{9CC48C6E-92EB-4814-AD37-97AB3622AB65}.Release|Win32.Build.0 = Release|Win32
 		{9CC48C6E-92EB-4814-AD37-97AB3622AB65}.Release|x64.ActiveCfg = Release|x64
 		{9CC48C6E-92EB-4814-AD37-97AB3622AB65}.Release|x64.Build.0 = Release|x64
+		{D53FBBD3-5B99-48F9-BA7E-EE3E9BFF81DF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D53FBBD3-5B99-48F9-BA7E-EE3E9BFF81DF}.Debug|Win32.Build.0 = Debug|Win32
+		{D53FBBD3-5B99-48F9-BA7E-EE3E9BFF81DF}.Debug|x64.ActiveCfg = Debug|x64
+		{D53FBBD3-5B99-48F9-BA7E-EE3E9BFF81DF}.Debug|x64.Build.0 = Debug|x64
+		{D53FBBD3-5B99-48F9-BA7E-EE3E9BFF81DF}.Release|Win32.ActiveCfg = Release|Win32
+		{D53FBBD3-5B99-48F9-BA7E-EE3E9BFF81DF}.Release|Win32.Build.0 = Release|Win32
+		{D53FBBD3-5B99-48F9-BA7E-EE3E9BFF81DF}.Release|x64.ActiveCfg = Release|x64
+		{D53FBBD3-5B99-48F9-BA7E-EE3E9BFF81DF}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

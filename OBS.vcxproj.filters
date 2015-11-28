@@ -160,6 +160,15 @@
     <ClCompile Include="Source\Service.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Main2.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\substring.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\stdafx.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\D3D10System.h">
@@ -208,6 +217,12 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Source\DataPacketHelpers.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Main2.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\stdafx.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

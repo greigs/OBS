@@ -452,6 +452,11 @@ void SetWorkingFolder(void)
     }
 }
 
+
+void WINAPI WinMain2()
+{
+	WinMain(0, 0, 0, 0);
+}
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
     if (!HasSSE2Support())
