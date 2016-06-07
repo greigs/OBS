@@ -14,21 +14,20 @@ materials for detailed information regarding Microsoft code samples.
 
 THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
 KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A 
 PARTICULAR PURPOSE.
 =====================================================================*/
 
 
 //__declspec(dllexport)
-class substring
+class obswrapper
 {
 public:
-	substring();
-	substring(const char * const);
-	~substring();
-
-	const char * getstring();
-	char * suffix(int n);
+	obswrapper();
+	obswrapper(const char * const);
+	~obswrapper();
+	//void InitInstance();
+	void StartOBS();
 private:
 	char * str;
 	unsigned short len;

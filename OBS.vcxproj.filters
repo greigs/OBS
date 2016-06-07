@@ -163,10 +163,10 @@
     <ClCompile Include="Source\Main2.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\substring.cpp">
+    <ClCompile Include="Source\stdafx.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\stdafx.cpp">
+    <ClCompile Include="Source\obswrapper.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
