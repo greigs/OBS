@@ -453,6 +453,15 @@ void SetWorkingFolder(void)
 }
 
 
+extern "C" __declspec(dllexport) IStream* __stdcall GetStream()
+{
+	IStream *stream;
+	CreateStreamOnHGlobal(NULL, true, &stream);
+	int i = 42;
+	stream->Write(&i, sizeof(int), NULL);
+	return stream;
+}
+
 void WINAPI WinMain2()
 {
 	WinMain(0, 0, 0, 0);

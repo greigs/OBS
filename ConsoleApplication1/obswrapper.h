@@ -1,7 +1,7 @@
 /*=====================================================================
 File:      substring.h
 
-Summary:   illustrates how a Managed Extensions __gc class can be used
+Summary:   illustrates how a Managed Extensions __gc class can be used	
 as a proxy class (or wrapper) for an unmanaged C++ class in a DLL
 ---------------------------------------------------------------------
 This file is part of the Visual J# .NET Code Samples.
