@@ -20,14 +20,15 @@ PARTICULAR PURPOSE.
 
 
 //__declspec(dllexport)
-class obswrapper
+#include <windows.h>
+public class obswrapper
 {
 public:
 	obswrapper();
 	obswrapper(const char * const);
 	~obswrapper();
 	//void InitInstance();
-	void StartOBS();
+	__declspec(dllexport) IStream* __stdcall StartOBS();
 private:
 	char * str;
 	unsigned short len;

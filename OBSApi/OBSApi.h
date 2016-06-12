@@ -38,6 +38,8 @@
 
 //-------------------------------------------
 
+
+
 BASE_EXPORT void LocalizeWindow(HWND hwnd, LocaleStringLookup *lookup=NULL);
 BASE_EXPORT void LocalizeMenu(HMENU hMenu, LocaleStringLookup *lookup=NULL);
 

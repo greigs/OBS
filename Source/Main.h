@@ -76,6 +76,11 @@ extern bool         bStreamOnStart;
 extern TCHAR        lpAppPath[MAX_PATH];
 extern TCHAR        lpAppDataPath[MAX_PATH];
 
+extern	__declspec(dllexport)   IStream	*externalStream;
+
+
+
+
 // this gets defined by the automatic building process
 #ifndef OBS_VERSION_SUFFIX
 #define OBS_VERSION_SUFFIX ""

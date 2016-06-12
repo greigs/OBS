@@ -23,7 +23,7 @@
 
 #define MANUAL_BUFFER_SIZE 64
 
-GraphicsSystem *GS = NULL;
+GraphicsSystem *GS = NULL;	
 
 GraphicsSystem::GraphicsSystem()
 :   curMatrix(0)

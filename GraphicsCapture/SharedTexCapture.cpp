@@ -17,13 +17,22 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 ********************************************************************************/
 
 
+
 #include "GraphicsCapture.h"
+#include "Main_api.h"
+
+//#include "SharedTexCapture.h"
+
 #include <dxgi.h>
+
 #include <d3d10.h>
 #include <sstream>
 #include <iostream>
 #include <chrono>
 #include <thread>
+
+
+
 
 
 template <class T>
@@ -99,19 +108,28 @@ Texture* tx2;
 Texture* SharedTexCapture::LockTexture()
 {
 
-
 	IDXGIResource *sharedResource10;
 	ID3D10Texture2D *tx = (ID3D10Texture2D*)sharedTextureExt->GetD3DTexture();
 
 	tx->QueryInterface(__uuidof(IDXGIResource), (void**)(&sharedResource10));
-
+	 
 	HANDLE sharedHandle;
 	sharedResource10->GetSharedHandle(&sharedHandle);
 	long handlelng = HandleToLong(sharedHandle);
-	std::wstring str1 = std::to_wstring(handlelng);
+	std::wstring str1 = std::to_wstring(handlelng); 
 	const wchar_t * str2 = str1.c_str();
 
+	char str[11] = "eeeeeeeeee";
+	externalStream->Write(&str, sizeof(char[11]), NULL);
+
+	//externalStream->Write(str2, sizeof(char[11]), NULL);
+
+	LARGE_INTEGER liSize;
+	liSize.QuadPart = 0;
+	externalStream->Seek(liSize, 0, nullptr);
+
 	AppWarning(str2);
+
 
 
 	GS->CopyTexture(sharedTextureExt, sharedTexture);

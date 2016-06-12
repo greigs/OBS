@@ -40,7 +40,7 @@ public:
 	__declspec(dllexport) obswrapper(const char * const);
 	__declspec(dllexport) ~obswrapper();
 
-	__declspec(dllexport) void StartOBS();
+	__declspec(dllexport) IStream* __stdcall StartOBS();
 	__declspec(dllexport) const char * getstring() const { return str; }
 	__declspec(dllexport) char * suffix(int n);
 private:
@@ -49,9 +49,9 @@ private:
 };
 
 
-void obswrapper::StartOBS()
+extern "C" __declspec(dllexport) IStream* __stdcall obswrapper::StartOBS()
 {
-	WinMain2();
+	return WinMain2();
 }
 
 obswrapper::obswrapper()

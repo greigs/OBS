@@ -53,6 +53,9 @@
     <ClInclude Include="WindowCapture.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Main_api.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GraphicsCapture.rc">

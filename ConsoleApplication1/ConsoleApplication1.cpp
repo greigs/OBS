@@ -1,20 +1,27 @@
 // ConsoleApplication1.cpp : main project file.
 
-
 //#using <OBS.lib>
 #include "stdafx.h"
 //#include "Main2.h"
+#include <windows.h>
 
 #include "obswrapper.h"
 
 using namespace System;
- 
+
 int main(array<System::String ^> ^args)
 {
 	return 0;
 }
 
-class UnmanagedClass {
+extern "C" {
+	__declspec(dllexport) IStream* StartOBS(){
+		obswrapper s0 = obswrapper();
+		return s0.StartOBS();
+	}
+}
+
+public class UnmanagedClass {
 
 public:
 	//String^ GetSharedTextureHandle()
@@ -22,8 +29,8 @@ public:
 	//	return gcnew String("asdasd");
 	//}
 
-	
-	
+
+
 	//void InitInstance()
 	//{
 
@@ -32,10 +39,10 @@ public:
 	//	Console::WriteLine(L"Hello World");
 	//}
 
-	void StartOBS()
+	IStream* StartOBS()
 	{
 		obswrapper s0 = obswrapper();
-		s0.StartOBS();
+		return s0.StartOBS();
 		//WinMain2(); 
 		//Console::WriteLine(L"Hello World");
 	}
@@ -47,7 +54,7 @@ public:
 public ref class ManagedClass {
 public:
 	// Allocate the native object on the C++ Heap via a constructor
-	ManagedClass() : m_Impl(new UnmanagedClass) {} 
+	ManagedClass() : m_Impl(new UnmanagedClass) {}
 
 	// Deallocate the native object on a destructor
 	~ManagedClass() {
@@ -65,8 +72,8 @@ public:
 	//	m_Impl->InitInstance();
 	//}
 
-	void StartOBS() {
-		m_Impl->StartOBS();
+	IStream* StartOBS() {
+		return m_Impl->StartOBS();
 	}
 
 

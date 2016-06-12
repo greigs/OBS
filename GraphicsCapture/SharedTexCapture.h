@@ -20,6 +20,8 @@
 #pragma once
 
 
+
+
 class SharedTexCapture : public GraphicsCaptureMethod
 {
     Texture *sharedTexture, *copyTexture, *sharedTextureExt;

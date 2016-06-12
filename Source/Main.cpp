@@ -27,7 +27,13 @@
 #include <inttypes.h>
 
 #include <gdiplus.h>
+#include <tchar.h>
+#include <strsafe.h>
 
+
+#include <windows.h>
+#include <iostream>
+#include <sstream>
 
 //----------------------------
 
@@ -44,8 +50,13 @@ bool        bStreamOnStart  = false;
 TCHAR       lpAppPath[MAX_PATH];
 TCHAR       lpAppDataPath[MAX_PATH];
 
+
+__declspec(dllexport) IStream *externalStream;
+
 //----------------------------
 
+
+DWORD WINAPI MyThreadFunction(LPVOID lpParam);
 
 void InitSockets();
 void TerminateSockets();
@@ -53,6 +64,7 @@ void TerminateSockets();
 void LogVideoCardStats();
 
 HANDLE hOBSMutex = NULL;
+
 
 BOOL LoadSeDebugPrivilege()
 {
@@ -455,17 +467,100 @@ void SetWorkingFolder(void)
 
 extern "C" __declspec(dllexport) IStream* __stdcall GetStream()
 {
-	IStream *stream;
-	CreateStreamOnHGlobal(NULL, true, &stream);
-	int i = 42;
-	stream->Write(&i, sizeof(int), NULL);
-	return stream;
+	
+	CreateStreamOnHGlobal(NULL, true, &externalStream);
+	char str[11] = "aaaaaaaaaa";
+	externalStream->Write(&str, sizeof(char[11]), NULL);
+	return externalStream;
 }
 
-void WINAPI WinMain2()
+
+#define MAX_THREADS 1
+#define BUF_SIZE 255
+
+typedef struct MyData {
+	int val1;
+	int val2;
+} MYDATA, *PMYDATA;
+
+
+
+DWORD   dwThreadIdArray[MAX_THREADS];
+HANDLE  hThreadArray[MAX_THREADS];
+
+
+extern "C" __declspec(dllexport) IStream* __stdcall WinMain2()
 {
-	WinMain(0, 0, 0, 0);
+	PMYDATA pDataArray[MAX_THREADS];
+
+	pDataArray[0] = (PMYDATA)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY,
+		sizeof(MYDATA));
+
+	IStream* stream = GetStream();
+
+	//thread funcTest1(threadFunc);
+	hThreadArray[0] = CreateThread(NULL,                   // default security attributes
+		0,                      // use default stack size  
+		MyThreadFunction,       // thread function name
+		pDataArray[0],          // argument to thread function 
+		0,                      // use default creation flags 
+		&dwThreadIdArray[0]);   // returns the thread identifier 
+		
+		//WinMain(0, 0, 0, 1);
+
+
+	return stream;
+
+	
 }
+
+DWORD WINAPI MyThreadFunction(LPVOID lpParam)
+{
+	HANDLE hStdout;
+	PMYDATA pDataArray;
+
+	TCHAR msgBuf[BUF_SIZE];
+	size_t cchStringSize;
+	DWORD dwChars;
+
+	// Make sure there is a console to receive output results. 
+
+	hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (hStdout == INVALID_HANDLE_VALUE)
+		return 1;
+
+	// Cast the parameter to the correct data type.
+	// The pointer is known to be valid because 
+	// it was checked for NULL before the thread was created.
+
+	pDataArray = (PMYDATA)lpParam;
+
+	// Print the parameter values using thread-safe functions.
+
+	StringCchPrintf(msgBuf, BUF_SIZE, TEXT("Parameters = %d, %d\n"),
+		pDataArray->val1, pDataArray->val2);
+	StringCchLength(msgBuf, BUF_SIZE, &cchStringSize);
+	WriteConsole(hStdout, msgBuf, (DWORD)cchStringSize, &dwChars, NULL);
+
+	char str1[11] = "bbbbbbbbbb";
+
+
+	externalStream->Write(&str1, sizeof(char[11]), NULL);
+
+	char str2[11] = "cccccccccc";
+	
+	externalStream->Write(&str2, sizeof(char[11]), NULL);
+
+	std::stringstream buffer;
+	std::streambuf * old = std::cout.rdbuf(buffer.rdbuf());
+
+	WinMain(0, 0, 0, 1);
+
+	
+
+	return 0;
+}
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
     if (!HasSSE2Support())

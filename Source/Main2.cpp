@@ -1,5 +1,5 @@
 #include "Main.h"
-void WinMain2()
+extern "C" __declspec(dllexport) IStream* __stdcall WinMain2()
 {
-	WinMain(0, 0, 0, 0);
+	return WinMain(0, 0, 0, 0);
 }
