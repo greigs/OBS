@@ -50,9 +50,9 @@ bool        bStreamOnStart  = false;
 TCHAR       lpAppPath[MAX_PATH];
 TCHAR       lpAppDataPath[MAX_PATH];
 
-
-__declspec(dllexport) IStream *externalStream;
-
+extern "C"{
+	__declspec(dllexport) IStream *externalStream;
+}
 //----------------------------
 
 
@@ -469,8 +469,6 @@ extern "C" __declspec(dllexport) IStream* __stdcall GetStream()
 {
 	
 	CreateStreamOnHGlobal(NULL, true, &externalStream);
-	char str[11] = "aaaaaaaaaa";
-	externalStream->Write(&str, sizeof(char[11]), NULL);
 	return externalStream;
 }
 
@@ -541,15 +539,6 @@ DWORD WINAPI MyThreadFunction(LPVOID lpParam)
 		pDataArray->val1, pDataArray->val2);
 	StringCchLength(msgBuf, BUF_SIZE, &cchStringSize);
 	WriteConsole(hStdout, msgBuf, (DWORD)cchStringSize, &dwChars, NULL);
-
-	char str1[11] = "bbbbbbbbbb";
-
-
-	externalStream->Write(&str1, sizeof(char[11]), NULL);
-
-	char str2[11] = "cccccccccc";
-	
-	externalStream->Write(&str2, sizeof(char[11]), NULL);
 
 	std::stringstream buffer;
 	std::streambuf * old = std::cout.rdbuf(buffer.rdbuf());

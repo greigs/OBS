@@ -57,6 +57,7 @@
 
 #include "OBSApi.h"
 
+extern "C"	__declspec(dllexport)   IStream	*externalStream;
 
 //-------------------------------------------
 // application globals
@@ -76,7 +77,7 @@ extern bool         bStreamOnStart;
 extern TCHAR        lpAppPath[MAX_PATH];
 extern TCHAR        lpAppDataPath[MAX_PATH];
 
-extern	__declspec(dllexport)   IStream	*externalStream;
+
 
 
 

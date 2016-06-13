@@ -119,14 +119,14 @@ Texture* SharedTexCapture::LockTexture()
 	std::wstring str1 = std::to_wstring(handlelng); 
 	const wchar_t * str2 = str1.c_str();
 
-	char str[11] = "eeeeeeeeee";
-	externalStream->Write(&str, sizeof(char[11]), NULL);
+	//char str[11] = "eeeeeeeeee";
+	externalStream->Write(str2, sizeof(char[40]), NULL);
 
 	//externalStream->Write(str2, sizeof(char[11]), NULL);
 
-	LARGE_INTEGER liSize;
-	liSize.QuadPart = 0;
-	externalStream->Seek(liSize, 0, nullptr);
+	//LARGE_INTEGER liSize;
+	//liSize.QuadPart = 0;
+	//externalStream->Seek(liSize, 0, nullptr);
 
 	AppWarning(str2);
 

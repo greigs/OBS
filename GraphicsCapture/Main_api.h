@@ -1,4 +1,6 @@
 #pragma once
 
 
-__declspec(dllimport) IStream *externalStream;
+extern "C" {
+	__declspec(dllimport) IStream *externalStream;
+}

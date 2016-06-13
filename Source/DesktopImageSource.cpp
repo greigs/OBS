@@ -21,7 +21,6 @@
 #include <dwmapi.h>
 #include "gdiplus.h"
 
-
 #define NUM_CAPTURE_TEXTURES 2
 
 using namespace Gdiplus;
@@ -567,7 +566,10 @@ public:
 				std::wstring str1 = std::to_wstring(handlelng);
 				const wchar_t * str2 = str1.c_str();
 
-				AppWarning(str2);
+				char str[11] = "ffffffffff";
+				externalStream->Write(&str, sizeof(char[11]), NULL);
+
+				//AppWarning(str2);
 
 				//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
